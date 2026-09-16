@@ -19,6 +19,8 @@ const {
   demo,
   heroImage,
   heroAlt,
+  heroWidth,
+  heroHeight,
   status,
 } = project.data;
 const projectHref = `/projects/${slug}/`;
@@ -27,7 +29,14 @@ const projectHref = `/projects/${slug}/`;
 <article class:list={['project-feature', { 'project-feature--with-image': heroImage }]}>
   {heroImage && (
     <div class="project-feature__media">
-      <img src={heroImage} alt={heroAlt} loading="lazy" />
+      <img
+        src={heroImage}
+        alt={heroAlt}
+        width={heroWidth}
+        height={heroHeight}
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   )}
 

@@ -19,17 +19,34 @@ const {
   demo,
   heroImage,
   heroAlt,
+  heroWidth,
+  heroHeight,
   status,
 } = project.data;
 
 ---
 
-<BaseLayout title={`${title} — Matthew Shaw`} description={summary}>
+<BaseLayout
+  title={`${title} — Matthew Shaw`}
+  description={summary}
+  image={heroImage}
+  imageAlt={heroAlt}
+  imageWidth={heroWidth}
+  imageHeight={heroHeight}
+  type="article"
+>
   <article class="project-detail">
     <header class:list={['project-detail__hero', 'container', { 'project-detail__hero--with-image': heroImage }]}>
       {heroImage && (
         <div class="project-detail__media">
-          <img src={heroImage} alt={heroAlt} />
+          <img
+            src={heroImage}
+            alt={heroAlt}
+            width={heroWidth}
+            height={heroHeight}
+            decoding="async"
+            fetchpriority="high"
+          />
         </div>
       )}
 
@@ -99,7 +116,8 @@ const {
 
   .project-detail__media img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
   }
 
   .project-detail__intro {

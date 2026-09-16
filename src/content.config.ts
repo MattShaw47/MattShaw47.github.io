@@ -21,6 +21,8 @@ const projectSchema = z
     github: z.url().optional(),
     demo: z.url().optional(),
     heroImage: z.string().trim().min(1).optional(),
+    heroWidth: z.number().int().positive().optional(),
+    heroHeight: z.number().int().positive().optional(),
     heroAlt: z
       .string()
       .trim()
@@ -28,7 +30,7 @@ const projectSchema = z
       .optional(),
     status: z.string().trim().min(1).optional(),
   })
-  .superRefine(({ heroImage, heroAlt }, context) => {
+  .superRefine(({ heroImage, heroAlt, heroWidth, heroHeight }, context) => {
     if (heroImage && !heroAlt) {
       context.addIssue({
         code: 'custom',
@@ -42,6 +44,22 @@ const projectSchema = z
         code: 'custom',
         path: ['heroAlt'],
         message: 'Remove heroAlt or configure the heroImage it describes.',
+      });
+    }
+
+    if (heroImage && (!heroWidth || !heroHeight)) {
+      context.addIssue({
+        code: 'custom',
+        path: ['heroWidth'],
+        message: 'heroWidth and heroHeight are required when heroImage is configured.',
+      });
+    }
+
+    if (!heroImage && (heroWidth || heroHeight)) {
+      context.addIssue({
+        code: 'custom',
+        path: ['heroWidth'],
+        message: 'Remove heroWidth and heroHeight or configure the heroImage they describe.',
       });
     }
   });

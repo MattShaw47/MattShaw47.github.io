@@ -32,7 +32,7 @@ or component.
 1. Create `src/content/projects/<project-name>.md`. Use a lowercase, hyphen-separated name.
 2. Add the required frontmatter and write the project narrative below it.
 3. If the project has a hero image, place it in `public/images/projects/` and set both
-   `heroImage` and `heroAlt`.
+   `heroImage`, `heroAlt`, `heroWidth`, and `heroHeight`.
 4. Run `pnpm check` to validate the content, then run `pnpm dev` to review the page locally.
 
 Use this structure as a starting point:
@@ -54,6 +54,8 @@ highlights:
 github: https://github.com/MattShaw47/project-name
 demo: https://example.com/project-name
 heroImage: /images/projects/project-name.webp
+heroWidth: 1600
+heroHeight: 1000
 heroAlt: A meaningful description of what the project image shows.
 status: Maintained
 ---
@@ -70,9 +72,10 @@ Explain the solution, important decisions, and results.
 ```
 
 The required fields are `title`, `slug`, `summary`, `year`, `featured`, `featuredOrder`, `tech`,
-and `highlights`. The `github`, `demo`, `heroImage`, `heroAlt`, and `status` fields are optional.
-Remove unused optional fields rather than leaving them blank. When `heroImage` is present,
-`heroAlt` is required; neither field should be included for a text-only project.
+and `highlights`. The `github`, `demo`, `heroImage`, `heroWidth`, `heroHeight`, `heroAlt`, and
+`status` fields are optional. Remove unused optional fields rather than leaving them blank. When
+`heroImage` is present, meaningful `heroAlt` text and the image's intrinsic pixel dimensions are
+required; none of those image fields should be included for a text-only project.
 
 The `slug` becomes the public route (`/projects/project-name/`) and must contain only lowercase
 letters, numbers, and single hyphens. Keep `featuredOrder` unique. The roadmap calls for exactly

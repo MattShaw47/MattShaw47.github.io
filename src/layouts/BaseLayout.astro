@@ -13,11 +13,34 @@ interface Props {
   title: string;
   description: string;
   navItems?: NavItem[];
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
 }
 
-const { title, description, navItems: suppliedNavItems } = Astro.props;
+const {
+  title,
+  description,
+  navItems: suppliedNavItems,
+  image = '/images/og-default.png',
+  imageAlt = 'Matthew Shaw software engineering portfolio',
+  imageWidth = 1200,
+  imageHeight = 630,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  tags = [],
+} = Astro.props;
 const hasPublishedPosts = (await getPublishedPosts()).length > 0;
 const isHomepage = Astro.url.pathname === '/';
+const site = Astro.site ?? new URL('https://MattShaw47.github.io');
+const canonicalUrl = new URL(Astro.url.pathname, site);
+const socialImageUrl = new URL(image, site);
 const navItems = suppliedNavItems ?? [
   { href: '/', label: 'Home' },
   { href: isHomepage ? '#featured-projects' : '/projects/', label: 'Projects' },
@@ -35,6 +58,29 @@ const navItems = suppliedNavItems ?? [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:site_name" content="Matthew Shaw" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:image:width" content={imageWidth.toString()} />
+    <meta property="og:image:height" content={imageHeight.toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    {type === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime.toISOString()} />
+    )}
+    {type === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime.toISOString()} />
+    )}
+    {type === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <title>{title}</title>
   </head>
   <body>

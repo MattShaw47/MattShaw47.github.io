@@ -16,6 +16,8 @@ highlights:
 github: https://github.com/MattShaw47/signal-garden
 demo: https://example.com/signal-garden
 heroImage: /images/projects/signal-garden.svg
+heroWidth: 1200
+heroHeight: 750
 heroAlt: Signal Garden dashboard showing a service timeline and three resolved alerts.
 status: Prototype
 ---

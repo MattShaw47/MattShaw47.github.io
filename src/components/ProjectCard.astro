@@ -8,14 +8,34 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, slug, summary, year, tech, github, demo, heroImage, heroAlt, status } = project.data;
+const {
+  title,
+  slug,
+  summary,
+  year,
+  tech,
+  github,
+  demo,
+  heroImage,
+  heroAlt,
+  heroWidth,
+  heroHeight,
+  status,
+} = project.data;
 const projectHref = `/projects/${slug}/`;
 ---
 
 <article class:list={['project-card', { 'project-card--with-image': heroImage }]}>
   {heroImage && (
     <div class="project-card__media">
-      <img src={heroImage} alt={heroAlt} loading="lazy" />
+      <img
+        src={heroImage}
+        alt={heroAlt}
+        width={heroWidth}
+        height={heroHeight}
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   )}
 
