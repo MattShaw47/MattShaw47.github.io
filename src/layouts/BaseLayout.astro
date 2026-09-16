@@ -2,6 +2,7 @@
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import '../styles/global.css';
+import { getPublishedPosts } from '../utils/posts';
 
 interface NavItem {
   href: string;
@@ -14,7 +15,17 @@ interface Props {
   navItems?: NavItem[];
 }
 
-const { title, description, navItems } = Astro.props;
+const { title, description, navItems: suppliedNavItems } = Astro.props;
+const hasPublishedPosts = (await getPublishedPosts()).length > 0;
+const isHomepage = Astro.url.pathname === '/';
+const navItems = suppliedNavItems ?? [
+  { href: '/', label: 'Home' },
+  { href: isHomepage ? '#featured-projects' : '/projects/', label: 'Projects' },
+  ...(hasPublishedPosts
+    ? [{ href: isHomepage ? '#writing' : '/writing/', label: 'Writing' }]
+    : []),
+  { href: isHomepage ? '#about' : '/#about', label: 'About' },
+];
 ---
 
 <!doctype html>

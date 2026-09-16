@@ -22,13 +22,9 @@ const {
   status,
 } = project.data;
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/projects/', label: 'Projects' },
-];
 ---
 
-<BaseLayout title={`${title} — Matthew Shaw`} description={summary} navItems={navItems}>
+<BaseLayout title={`${title} — Matthew Shaw`} description={summary}>
   <article class="project-detail">
     <header class:list={['project-detail__hero', 'container', { 'project-detail__hero--with-image': heroImage }]}>
       {heroImage && (

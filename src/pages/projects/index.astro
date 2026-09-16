@@ -8,16 +8,11 @@ const projects = (await getCollection('projects')).sort(
   (a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
 );
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/projects/', label: 'Projects' },
-];
 ---
 
 <BaseLayout
   title="Projects — Matthew Shaw"
   description="Selected software engineering projects by Matthew Shaw."
-  navItems={navItems}
 >
   <header class="projects-header container flow">
     <p class="projects-header__eyebrow">Selected work</p>

@@ -1,0 +1,74 @@
+---
+import PostPreview from '../../components/PostPreview.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../utils/posts';
+
+const publishedPosts = await getPublishedPosts();
+
+if (publishedPosts.length === 0) {
+  return Astro.redirect('/');
+}
+
+const sampleIntroduction =
+  'Replace this sample introduction with a concise description of the topics, questions, or practical lessons readers can expect from your published writing.';
+---
+
+<BaseLayout
+  title="Writing — Matthew Shaw"
+  description="Articles and notes about software engineering by Matthew Shaw."
+>
+  <header class="writing-header container flow">
+    <p class="writing-header__eyebrow">Writing</p>
+    <h1>Notes on building software</h1>
+    <p>{sampleIntroduction}</p>
+  </header>
+
+  <ol class="writing-list container" aria-label="Published posts">
+    {publishedPosts.map((post) => <PostPreview post={post} />)}
+  </ol>
+</BaseLayout>
+
+<style>
+  .writing-header {
+    --flow-space: var(--space-4);
+    padding-block: clamp(var(--space-7), 8vw, var(--space-9));
+  }
+
+  .writing-header__eyebrow {
+    margin-block-end: 0;
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-block-end: 0;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .writing-header > p:last-child {
+    max-width: var(--width-copy);
+    margin-block-end: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-copy);
+  }
+
+  .writing-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin-block: 0;
+    padding-block: 0 clamp(var(--space-8), 10vw, var(--space-9));
+    list-style: none;
+  }
+
+  @media (max-width: 48rem) {
+    .writing-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

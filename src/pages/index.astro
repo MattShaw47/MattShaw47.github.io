@@ -1,8 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 
+import PostPreview from '../components/PostPreview.astro';
 import ProjectFeature from '../components/ProjectFeature.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../utils/posts';
 
 const pageTitle = 'Matthew Shaw — Portfolio';
 const pageDescription = 'Personal software engineering portfolio for Matthew Shaw.';
@@ -47,21 +49,11 @@ if (featuredProjects.length !== 3) {
   );
 }
 
-const posts = await getCollection('posts');
-const publishedPosts = posts
-  .filter(({ data }) => !data.draft)
-  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+const publishedPosts = await getPublishedPosts();
 const hasPublishedPosts = publishedPosts.length > 0;
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '#featured-projects', label: 'Projects' },
-  ...(hasPublishedPosts ? [{ href: '#writing', label: 'Writing' }] : []),
-  { href: '#about', label: 'About' },
-];
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} navItems={navItems}>
+<BaseLayout title={pageTitle} description={pageDescription}>
   <section class="hero container flow" aria-labelledby="hero-title">
     <p class="eyebrow">{sampleCopy.hero.eyebrow}</p>
     <h1 id="hero-title">{sampleCopy.hero.title}</h1>
@@ -92,13 +84,10 @@ const navItems = [
       </div>
 
       <ul class="writing-list">
-        {publishedPosts.slice(0, 3).map((post) => (
-          <li>
-            <a class="text-link" href={`/writing/${post.data.slug}/`}>{post.data.title}</a>
-            <p>{post.data.summary}</p>
-          </li>
-        ))}
+        {publishedPosts.slice(0, 3).map((post) => <PostPreview post={post} headingLevel="h3" />)}
       </ul>
+
+      <a class="text-link" href="/writing/">View all writing</a>
     </section>
   )}
 
@@ -182,14 +171,9 @@ const navItems = [
   .writing-list {
     display: grid;
     gap: var(--space-5);
-    margin-block: var(--space-7) 0;
+    margin-block: var(--space-7) var(--space-6);
     padding: 0;
     list-style: none;
-  }
-
-  .writing-list p {
-    max-width: var(--width-copy);
-    margin-block: var(--space-2) 0;
   }
 
   .about-grid {
