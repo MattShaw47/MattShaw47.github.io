@@ -1,0 +1,37 @@
+---
+interface Props {
+  owner?: string;
+}
+
+const { owner = 'Matthew Shaw' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner container">
+    <p>&copy; {year} {owner}</p>
+    <a class="text-link" href="#top">Back to top</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: auto;
+    border-block-start: var(--border-width) solid var(--color-border);
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-6);
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>
