@@ -1,0 +1,26 @@
+# Build output
+dist/
+
+# Generated Astro files
+.astro/
+
+# Dependencies
+node_modules/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Debug logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
