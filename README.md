@@ -113,4 +113,7 @@ Before deployment, rename `MattShaw47/Matt-Shaw-Page` to
 the Astro configuration to include `base: '/Matt-Shaw-Page'`; the resulting site URL will be
 `https://MattShaw47.github.io/Matt-Shaw-Page/`.
 
-The GitHub Actions deployment workflow will be added in the deployment phase.
+The workflow in `.github/workflows/deploy.yml` builds and deploys the site whenever `main` is
+pushed, and it can also be started manually. In the repository's **Settings → Pages** screen, set
+the deployment source to **GitHub Actions**. The workflow uses the committed `pnpm-lock.yaml` to
+detect pnpm and publishes Astro's production output through GitHub Pages.
