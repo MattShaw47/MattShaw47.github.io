@@ -104,16 +104,4 @@ status labels, and external links, so no component changes are needed for those 
 
 ## GitHub Pages URL
 
-The Astro configuration targets `https://MattShaw47.github.io/` and intentionally has no
-`base` path. GitHub Pages serves that root URL only from the special repository named
-`MattShaw47.github.io`.
-
-Before deployment, rename `MattShaw47/Matt-Shaw-Page` to
-`MattShaw47/MattShaw47.github.io`. If the repository keeps its current name instead, change
-the Astro configuration to include `base: '/Matt-Shaw-Page'`; the resulting site URL will be
-`https://MattShaw47.github.io/Matt-Shaw-Page/`.
-
-The workflow in `.github/workflows/deploy.yml` builds and deploys the site whenever `main` is
-pushed, and it can also be started manually. In the repository's **Settings → Pages** screen, set
-the deployment source to **GitHub Actions**. The workflow uses the committed `pnpm-lock.yaml` to
-detect pnpm and publishes Astro's production output through GitHub Pages.
+The Astro configuration targets `https://MattShaw47.github.io/`.
