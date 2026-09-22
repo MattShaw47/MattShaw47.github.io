@@ -1,7 +1,7 @@
 ---
 title: HSR Overlay
 slug: hsr-overlay
-summary: A Windows desktop overlay that reads in-game relic data from Honkai: Star Rail using OCR and turns noisy screen captures into structured information for real-time relic evaluation.
+summary: "A Windows desktop overlay that reads in-game relic data from Honkai: Star Rail using OCR and turns noisy screen captures into structured information for real-time relic evaluation."
 year: 2026
 featured: true
 featuredOrder: 1
