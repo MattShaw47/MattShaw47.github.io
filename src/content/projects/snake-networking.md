@@ -12,9 +12,9 @@ tech:
   - TCP
   - JSON
 highlights:
-  - Receives and deserializes continuous multiplayer game-state updates over TCP.
-  - Maintains client-side models for players, walls, powerups, and other world state.
-  - Reuses a networking library originally developed for a multi-user chat application.
+  - Reusable TCP networking layer developed across chat and game assignments.
+  - JSON synchronization of players, walls, powerups, and world state.
+  - Browser-based rendering and live player input with Blazor.
 github: https://github.com/MattShaw47/snake
 status: Completed
 ---

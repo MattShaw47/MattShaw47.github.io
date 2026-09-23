@@ -2,6 +2,8 @@
 interface NavItem {
   href: string;
   label: string;
+  external?: boolean;
+  newTab?: boolean;
 }
 
 interface Props {
@@ -27,7 +29,14 @@ const isCurrent = (href: string) =>
         <ul class="site-header__nav">
           {navItems.map((item) => (
             <li>
-              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              <a
+                class:list={{ 'external-link': item.external }}
+                href={item.href}
+                target={item.newTab ? '_blank' : undefined}
+                rel={item.newTab ? 'noreferrer' : undefined}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                aria-label={item.newTab ? `${item.label} (opens in a new tab)` : undefined}
+              >
                 {item.label}
               </a>
             </li>
@@ -40,9 +49,12 @@ const isCurrent = (href: string) =>
 
 <style>
   .site-header {
+    position: sticky;
+    z-index: 20;
+    inset-block-start: 0;
     min-height: var(--header-height);
     border-block-end: var(--border-width) solid var(--color-border);
-    background: color-mix(in srgb, var(--color-canvas) 92%, transparent);
+    background: var(--color-canvas);
   }
 
   .site-header__inner {
@@ -59,7 +71,7 @@ const isCurrent = (href: string) =>
     flex: 0 1 auto;
     font-size: var(--text-sm);
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
     text-decoration: none;
     text-transform: uppercase;
   }
@@ -97,10 +109,12 @@ const isCurrent = (href: string) =>
   @media (max-width: 36rem) {
     .site-header__inner {
       gap: var(--space-2) var(--space-4);
+      align-items: flex-start;
+      flex-direction: column;
     }
 
     .site-header__nav {
-      column-gap: var(--space-4);
+      gap: var(--space-1) var(--space-4);
     }
   }
 </style>

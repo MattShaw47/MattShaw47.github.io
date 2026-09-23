@@ -58,6 +58,7 @@ heroWidth: 1600
 heroHeight: 1000
 heroAlt: A meaningful description of what the project image shows.
 status: Maintained
+context: Personal Project
 ---
 
 Introductory context about the project and its purpose.
@@ -72,8 +73,8 @@ Explain the solution, important decisions, and results.
 ```
 
 The required fields are `title`, `slug`, `summary`, `year`, `featured`, `featuredOrder`, `tech`,
-and `highlights`. The `github`, `demo`, `heroImage`, `heroWidth`, `heroHeight`, `heroAlt`, and
-`status` fields are optional. Remove unused optional fields rather than leaving them blank. When
+and `highlights`. The `github`, `demo`, `heroImage`, `heroWidth`, `heroHeight`, `heroAlt`, `status`,
+and `context` fields are optional. Remove unused optional fields rather than leaving them blank. When
 `heroImage` is present, meaningful `heroAlt` text and the image's intrinsic pixel dimensions are
 required; none of those image fields should be included for a text-only project.
 
@@ -101,6 +102,14 @@ public/images/projects/                 Optional project images
 Frontmatter supplies the hero, metadata, links, technologies, and highlights. Markdown below the
 frontmatter becomes the main article body. Shared layouts automatically omit missing images,
 status labels, and external links, so no component changes are needed for those variations.
+
+Article images use the normal prose width by default. Wrap an image or figure in an element with a
+`wide` class in Markdown or MDX when a screenshot or diagram benefits from additional width.
+
+## Contact links
+
+Email, GitHub, LinkedIn, phone, and résumé values are defined once in `src/config/contact.ts`.
+Leave unavailable values as `undefined`; the header and contact section omit them automatically.
 
 ## GitHub Pages URL
 

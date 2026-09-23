@@ -1,12 +1,15 @@
 ---
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { contactDetails } from '../config/contact';
 import '../styles/global.css';
 import { getPublishedPosts } from '../utils/posts';
 
 interface NavItem {
   href: string;
   label: string;
+  external?: boolean;
+  newTab?: boolean;
 }
 
 interface Props {
@@ -42,12 +45,18 @@ const site = Astro.site ?? new URL('https://MattShaw47.github.io');
 const canonicalUrl = new URL(Astro.url.pathname, site);
 const socialImageUrl = new URL(image, site);
 const navItems = suppliedNavItems ?? [
-  { href: '/', label: 'Home' },
-  { href: isHomepage ? '#featured-projects' : '/projects/', label: 'Projects' },
+  { href: isHomepage ? '#featured-projects' : '/#featured-projects', label: 'Projects' },
   ...(hasPublishedPosts
     ? [{ href: isHomepage ? '#writing' : '/writing/', label: 'Writing' }]
     : []),
   { href: isHomepage ? '#about' : '/#about', label: 'About' },
+  { href: isHomepage ? '#contact' : '/#contact', label: 'Contact' },
+  ...(contactDetails.github
+    ? [{ href: contactDetails.github, label: 'GitHub', external: true, newTab: true }]
+    : []),
+  ...(contactDetails.resume
+    ? [{ href: contactDetails.resume, label: 'Résumé', external: true, newTab: true }]
+    : []),
 ];
 ---
 

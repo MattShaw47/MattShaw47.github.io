@@ -21,6 +21,7 @@ const {
   heroWidth,
   heroHeight,
   status,
+  context,
 } = project.data;
 const projectHref = `/projects/${slug}/`;
 ---
@@ -43,6 +44,7 @@ const projectHref = `/projects/${slug}/`;
     <div class="project-card__meta">
       <span>{year}</span>
       {status && <span>{status}</span>}
+      {context && <span>{context}</span>}
     </div>
 
     <h2 class="project-card__title">
@@ -51,14 +53,27 @@ const projectHref = `/projects/${slug}/`;
 
     <p class="project-card__summary">{summary}</p>
     <TechTags tech={tech} label={`Technologies used for ${title}`} />
+    <span class="project-card__view" aria-hidden="true">View project →</span>
 
     {(github || demo) && (
       <div class="project-card__actions cluster" aria-label={`${title} external links`}>
         {github && (
-          <a class="text-link external-link" href={github} target="_blank" rel="noreferrer">GitHub</a>
+          <a
+            class="text-link external-link"
+            href={github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`GitHub for ${title} (opens in a new tab)`}
+          >GitHub</a>
         )}
         {demo && (
-          <a class="text-link external-link" href={demo} target="_blank" rel="noreferrer">Live demo</a>
+          <a
+            class="text-link external-link"
+            href={demo}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Live demo for ${title} (opens in a new tab)`}
+          >Live demo</a>
         )}
       </div>
     )}
@@ -142,6 +157,11 @@ const projectHref = `/projects/${slug}/`;
     z-index: 1;
     margin-block-start: auto;
     padding-block-start: var(--space-3);
+  }
+
+  .project-card__view {
+    color: var(--color-accent);
+    font-weight: 750;
   }
 
   @media (max-width: 36rem) {

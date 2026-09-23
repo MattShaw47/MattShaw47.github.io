@@ -5,9 +5,10 @@ import TechTags from './TechTags.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
+  primary?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, primary = false } = Astro.props;
 const {
   title,
   slug,
@@ -22,11 +23,17 @@ const {
   heroWidth,
   heroHeight,
   status,
+  context,
 } = project.data;
 const projectHref = `/projects/${slug}/`;
 ---
 
-<article class:list={['project-feature', { 'project-feature--with-image': heroImage }]}>
+<article
+  class:list={[
+    'project-feature',
+    { 'project-feature--with-image': heroImage, 'project-feature--primary': primary },
+  ]}
+>
   {heroImage && (
     <div class="project-feature__media">
       <img
@@ -44,6 +51,7 @@ const projectHref = `/projects/${slug}/`;
     <div class="project-feature__meta">
       <span>{year}</span>
       {status && <span>{status}</span>}
+      {context && <span>{context}</span>}
     </div>
 
     <h3 class="project-feature__title">
@@ -57,13 +65,27 @@ const projectHref = `/projects/${slug}/`;
       {highlights.map((highlight) => <li>{highlight}</li>)}
     </ul>
 
+    <span class="project-feature__view" aria-hidden="true">View project →</span>
+
     {(github || demo) && (
       <div class="project-feature__actions cluster" aria-label={`${title} external links`}>
         {github && (
-          <a class="text-link external-link" href={github} target="_blank" rel="noreferrer">GitHub</a>
+          <a
+            class="text-link external-link"
+            href={github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`GitHub for ${title} (opens in a new tab)`}
+          >GitHub</a>
         )}
         {demo && (
-          <a class="text-link external-link" href={demo} target="_blank" rel="noreferrer">Live demo</a>
+          <a
+            class="text-link external-link"
+            href={demo}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Live demo for ${title} (opens in a new tab)`}
+          >Live demo</a>
         )}
       </div>
     )}
@@ -80,16 +102,35 @@ const projectHref = `/projects/${slug}/`;
     border-radius: var(--radius-md);
     background: var(--color-surface);
     box-shadow: var(--shadow-subtle);
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .project-feature:hover,
+  .project-feature:focus-within {
+    border-color: var(--color-border-strong);
+    box-shadow: 0 2px 4px rgb(27 29 31 / 8%), 0 16px 40px rgb(27 29 31 / 7%);
+  }
+
+  .project-feature--primary {
+    border-color: var(--color-border-strong);
   }
 
   .project-feature--with-image {
-    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
     grid-template-areas: 'body media';
+    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
+  }
+
+  .project-feature--primary.project-feature--with-image {
+    grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
   }
 
   .project-feature__media {
     grid-area: media;
     min-height: 100%;
+    overflow: hidden;
     border-inline-start: var(--border-width) solid var(--color-border);
     background: var(--color-accent-soft);
   }
@@ -107,6 +148,10 @@ const projectHref = `/projects/${slug}/`;
     padding: clamp(var(--space-6), 5vw, var(--space-8));
   }
 
+  .project-feature--primary .project-feature__body {
+    padding: clamp(var(--space-7), 5vw, var(--space-9));
+  }
+
   .project-feature__meta {
     display: flex;
     flex-wrap: wrap;
@@ -121,6 +166,10 @@ const projectHref = `/projects/${slug}/`;
   .project-feature__title {
     margin-block-end: 0;
     font-size: var(--text-xl);
+  }
+
+  .project-feature--primary .project-feature__title {
+    font-size: clamp(1.65rem, 1.4rem + 1vw, 2.15rem);
   }
 
   .project-feature__title-link {
@@ -147,12 +196,34 @@ const projectHref = `/projects/${slug}/`;
   }
 
   .project-feature__highlights {
-    padding-inline-start: 1.25em;
+    display: grid;
+    gap: var(--space-3);
+    margin-block-end: 0;
+    padding: 0;
     color: var(--color-text-muted);
+    list-style: none;
   }
 
-  .project-feature__highlights li + li {
-    margin-block-start: var(--space-2);
+  .project-feature__highlights li {
+    position: relative;
+    padding-inline-start: var(--space-4);
+    line-height: 1.55;
+  }
+
+  .project-feature__highlights li::before {
+    position: absolute;
+    inset-block-start: 0.65em;
+    inset-inline-start: 0;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    content: '';
+  }
+
+  .project-feature__view {
+    color: var(--color-accent);
+    font-weight: 750;
   }
 
   .project-feature__actions {
@@ -161,18 +232,23 @@ const projectHref = `/projects/${slug}/`;
   }
 
   @media (max-width: 48rem) {
-    .project-feature--with-image {
-      grid-template-columns: minmax(0, 1fr);
+    .project-feature--with-image,
+    .project-feature--primary.project-feature--with-image {
       grid-template-areas:
         'media'
         'body';
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .project-feature__media {
       min-height: auto;
       aspect-ratio: 16 / 10;
-      border-inline-start: 0;
       border-block-end: var(--border-width) solid var(--color-border);
+      border-inline-start: 0;
+    }
+
+    .project-feature--primary .project-feature__body {
+      padding: clamp(var(--space-6), 7vw, var(--space-7));
     }
   }
 </style>

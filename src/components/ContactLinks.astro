@@ -1,0 +1,90 @@
+---
+import { contactDetails } from '../config/contact';
+
+const { email, github, linkedin, phone, resume } = contactDetails;
+const telephoneHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : undefined;
+---
+
+<ul class="contact-links" aria-label="Contact links">
+  {email && (
+    <li>
+      <a class="contact-link" href={`mailto:${email}`}>
+        <span>Email</span>
+        <span class="contact-link__value">{email}</span>
+      </a>
+    </li>
+  )}
+  {github && (
+    <li>
+      <a class="contact-link" href={github} target="_blank" rel="noreferrer" aria-label="GitHub (opens in a new tab)">
+        <span>GitHub</span>
+        <span class="contact-link__arrow" aria-hidden="true">↗</span>
+      </a>
+    </li>
+  )}
+  {linkedin && (
+    <li>
+      <a class="contact-link" href={linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn (opens in a new tab)">
+        <span>LinkedIn</span>
+        <span class="contact-link__arrow" aria-hidden="true">↗</span>
+      </a>
+    </li>
+  )}
+  {phone && telephoneHref && (
+    <li>
+      <a class="contact-link" href={telephoneHref}>
+        <span>Phone</span>
+        <span class="contact-link__value">{phone}</span>
+      </a>
+    </li>
+  )}
+  {resume && (
+    <li>
+      <a class="contact-link" href={resume} target="_blank" rel="noreferrer" aria-label="Résumé (opens in a new tab)">
+        <span>Résumé</span>
+        <span class="contact-link__arrow" aria-hidden="true">↗</span>
+      </a>
+    </li>
+  )}
+</ul>
+
+<style>
+  .contact-links {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-link {
+    display: flex;
+    min-height: 3rem;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-block-end: var(--border-width) solid var(--color-border);
+    color: var(--color-text);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .contact-link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .contact-link__value {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    text-align: end;
+  }
+
+  .contact-link__arrow {
+    font-size: var(--text-sm);
+  }
+</style>

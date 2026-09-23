@@ -29,6 +29,7 @@ const projectSchema = z
       .min(10, 'Alternative text should briefly describe the image.')
       .optional(),
     status: z.string().trim().min(1).optional(),
+    context: z.string().trim().min(1).optional(),
   })
   .superRefine(({ heroImage, heroAlt, heroWidth, heroHeight }, context) => {
     if (heroImage && !heroAlt) {

@@ -12,11 +12,12 @@ tech:
   - Room
   - Firebase
 highlights:
-  - Supports freehand drawing, configurable brushes, and geometric drawing tools.
-  - Combines local Room persistence with Firebase authentication, cloud storage, and shared galleries.
-  - Uses an MVVM-based structure separating UI, state, persistence, repositories, and navigation.
+  - Jetpack Compose drawing and gallery interfaces.
+  - Room persistence with Firebase authentication and cloud features.
+  - MVVM separation across UI, ViewModels, repositories, and storage.
 github: https://github.com/MattShaw47/Android-Drawing-App
 status: Completed
+context: Academic Team Project · CS 4530
 ---
 
 This project was developed as a team project for CS 4530 at the

@@ -11,9 +11,9 @@ tech:
   - WPF
   - Tesseract OCR
 highlights:
-  - Extracts relic names, stats, and values directly from targeted regions of the game window.
-  - Uses specialized image preprocessing and OCR profiles to improve recognition of different UI elements.
-  - Parses OCR output into structured relic data and simulates future upgrades to estimate improvement potential.
+  - Targeted screen capture and OCR for relic names, stats, and values.
+  - UI-specific image preprocessing to improve Tesseract recognition.
+  - Structured relic parsing and Monte Carlo upgrade evaluation.
 status: Active Development
 ---
 ---
