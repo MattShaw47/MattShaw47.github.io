@@ -14,6 +14,7 @@ highlights:
   - Targeted screen capture and OCR for relic names, stats, and values.
   - UI-specific image preprocessing to improve Tesseract recognition.
   - Structured relic parsing and Monte Carlo upgrade evaluation.
+github: https://github.com/MattShaw47/HSR-Overlay
 status: Active Development
 ---
 ---
