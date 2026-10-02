@@ -90,4 +90,3 @@ sharing, authentication, and image analysis.
 My later work included unit-test additions and fixes, error-handling
 changes, and integration cleanup across gallery, repository, and analysis
 code.
-...

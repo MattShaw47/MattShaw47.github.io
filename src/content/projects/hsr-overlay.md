@@ -17,79 +17,47 @@ highlights:
 github: https://github.com/MattShaw47/HSR-Overlay
 status: Active Development
 ---
----
 
-## Future work
+HSR Overlay is a Windows desktop tool I built to automate relic evaluation in *Honkai: Star Rail*. Relics have several randomized stats, and deciding whether a new piece is worth upgrading normally means either eyeballing it or manually copying its stats into an external calculator.
 
-HSR Overlay is a Windows desktop project I built to evaluate relics in
-Honkai: Star Rail without requiring the player to manually enter every
-stat into an external calculator. The current implementation reads the
-game UI directly, converts the captured text into structured relic data,
-and uses that data to estimate whether an unfinished relic is likely to
-become an upgrade.
+The goal of the project is to remove that manual step. The current version watches the game window, reads relic information directly from the UI with OCR, converts the result into structured game data, and estimates how likely an unfinished relic is to become an upgrade over the piece already equipped.
 
-The project began as an experiment with screen capture and OCR, but the
-main challenge quickly became making imperfect visual data reliable enough
-to drive actual analysis.
+What started as a fairly simple OCR experiment ended up being much more about dealing with unreliable input.
 
-## Reading the game screen
+## Getting data out of the game UI
 
-The application monitors the Honkai: Star Rail window and uses small
-screen probes to recognize when relevant interfaces are open. Instead of
-running OCR against an entire screenshot, it captures targeted regions
-containing information such as relic names, stat labels, and numeric
-values.
+I don't OCR the entire game window. The overlay first detects when relevant menus are open, then captures small regions containing the relic name, stat labels, and stat values.
 
-Those regions are defined relative to the game window rather than as
-fixed desktop coordinates, allowing the capture pipeline to reason about
-the game UI independently of where the window is positioned.
+The capture regions are calculated relative to the game window rather than the desktop, so moving the game window does not break the pipeline.
 
-## Making OCR reliable
+From there, each region is handled according to the kind of text I expect to find in it.
 
-Generic OCR worked poorly on several parts of the interface. Stat values,
-names, and highlighted main stats use different colors and layouts, so I
-built separate preprocessing paths for different categories of text.
+## Making OCR usable
 
-Numeric regions are enlarged and thresholded before recognition, while
-highlighted main-stat values use color-based filtering to isolate the
-orange text from the surrounding UI. Tesseract also runs with different
-recognition profiles depending on whether the expected input is a number,
-a relic title, or general text.
+A single Tesseract configuration wasn't reliable enough for the game's UI.
 
-This reduced the problem from "understand this screenshot" to several much
-smaller OCR tasks with constrained inputs.
+Relic names, white stat text, and orange highlighted values all behave differently, so I ended up giving them separate preprocessing paths. Numeric values are enlarged and thresholded before OCR, while main-stat values use color filtering to isolate the orange text from the surrounding interface. Tesseract also uses different character restrictions and segmentation settings depending on whether I'm reading a number, a title, or general text.
 
-## Turning imperfect text into structured data
+That made the system much more predictable than asking OCR to interpret a large mixed screenshot.
 
-OCR output is still noisy, so recognized text passes through a second
-domain-specific parsing layer before it is trusted.
+## Cleaning up the result
 
-The parser normalizes formatting, separates stat labels from values,
-identifies relic pieces using known game data, and converts text such as
-"crit dmg 22.0%" into structured stat objects. Additional validation and
-sanitization reject readings that do not correspond to valid relic
-configurations.
+Even with preprocessing, OCR output is never perfectly clean. The next part of the pipeline treats the recognized text as untrusted input.
 
-The result is a structured model that the rest of the application can use
-without knowing anything about how the original information was captured.
+The parser normalizes formatting, matches recognized relic names against known game data, pairs stat labels with values, and converts strings such as `CRIT DMG 22.0%` into typed relic stats. Readings that don't form a valid relic are rejected instead of being passed farther into the application.
 
-## Evaluating relic upgrades
+Once that step succeeds, the rest of the program works with a normal structured relic object rather than OCR text.
 
-Once a relic has been recognized, the application evaluates it using
-character-specific stat weights and the relic currently equipped in the
-same slot.
+## Estimating upgrade potential
 
-For relics that are not fully upgraded, the analyzer simulates the
-remaining upgrade rolls thousands of times and measures how frequently
-the candidate finishes with a better weighted score than the equipped
-piece. 
+The analysis layer compares a recognized relic against the piece currently equipped by that character.
 
-## Future work
+For an unfinished relic, the program simulates its remaining upgrade rolls thousands of times using the game's roll rules. Each finished result is scored using character-specific stat weights and compared with the equipped relic.
 
-The current version obtains game state visually through screen capture and
-OCR. I am also experimenting with an external packet-capture pipeline that
-would move data acquisition away from the gaming PC.
+The output is a probability that continuing to upgrade the new piece will produce an improvement, which is much more useful than simply displaying the stats OCR happened to read.
 
-The longer-term goal is to keep the analysis layer independent of its data
-source, allowing structured game information from either OCR or decoded
-network traffic to feed the same evaluation system.
+## Where I'm taking it next
+
+The current implementation gets game state visually through screen capture and OCR. I'm also working on a separate packet-capture path using mirrored network traffic and a Raspberry Pi.
+
+Long term, I want the analysis code to care about structured game data rather than where that data came from. OCR and decoded network traffic could then act as two different inputs to the same evaluation system.
